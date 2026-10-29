@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor – Upload Resume</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="dashboard.html" class="logo">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="upload.html" class="btn btn-primary btn-sm">Upload Resume</a>
+      <a href="dashboard.html" class="btn btn-outline btn-sm">Dashboard</a>
+      <button id="logout-btn" class="btn btn-outline btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="upload-page">
+
+    <!-- Upload card -->
+    <section class="upload-card" id="upload-card">
+      <h1>Upload Your Resume</h1>
+      <p class="muted">PDF only · max 5 MB · text-based PDFs only (not scanned images)</p>
+
+      <div class="drop-zone" id="drop-zone">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 20h16"/></svg>
+        <p>Drag &amp; drop a PDF here, or</p>
+        <label class="btn btn-outline" for="file-input">Browse file</label>
+        <input type="file" id="file-input" accept=".pdf" style="display:none" />
+        <p id="file-name" class="file-name muted"></p>
+      </div>
+
+      <button id="upload-btn" class="btn btn-primary" disabled>Parse Resume</button>
+      <div id="upload-status" aria-live="polite"></div>
+    </section>
+
+    <!-- Results: shown after a successful upload -->
+    <section class="result-section" id="result-section" style="display:none">
+      <div class="result-header">
+        <h2 id="result-filename"></h2>
+        <span class="badge badge-ok" id="parse-badge"></span>
+      </div>
+
+      <!-- Structured preview -->
+      <div class="structured-grid">
+
+        <div class="struct-panel" id="skills-panel">
+          <h3>Skills</h3>
+          <ul id="skills-list" class="tag-list"></ul>
+        </div>
+
+        <div class="struct-panel" id="experience-panel">
+          <h3>Experience</h3>
+          <div id="experience-list"></div>
+        </div>
+
+        <div class="struct-panel" id="education-panel">
+          <h3>Education</h3>
+          <div id="education-list"></div>
+        </div>
+
+        <div class="struct-panel" id="projects-panel">
+          <h3>Projects</h3>
+          <div id="projects-list"></div>
+        </div>
+
+      </div>
+
+      <!-- Raw text toggle -->
+      <details class="raw-details">
+        <summary>Show raw extracted text</summary>
+        <pre id="raw-text-output"></pre>
+      </details>
+
+      <div class="result-actions">
+        <button id="upload-another-btn" class="btn btn-outline">Upload Another</button>
+        <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </section>
+
+    <!-- Previous resumes -->
+    <section class="prev-section">
+      <h2>Your Resumes</h2>
+      <div id="prev-list" class="prev-list">
+        <p class="muted" id="prev-empty">No resumes uploaded yet.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/upload.js"></script>
+</body>
+</html>

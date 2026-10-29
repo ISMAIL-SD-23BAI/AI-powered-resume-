@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — ATS Compatibility Analyzer</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="tailor.html" class="btn btn-ghost btn-sm">Tailor Resume</a>
+      <a href="ats.html" class="btn btn-primary btn-sm" aria-current="page">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── Input card ──────────────────────────────────────────────────────── -->
+    <div class="card">
+      <h1 class="ats-title">ATS Compatibility Analyzer</h1>
+      <p class="ats-desc">Select a resume, paste a job description, and get an explainable compatibility score — powered by local AI. No LLM call needed; results are instant.</p>
+
+      <form id="ats-form">
+        <div class="ats-form-grid">
+
+          <!-- Left: resume selection -->
+          <div>
+            <label for="resume-select">Resume</label>
+            <select id="resume-select">
+              <option value="">Loading resumes…</option>
+            </select>
+
+            <div class="quick-upload-row">
+              <span class="quick-upload-or">or</span>
+              <label class="btn btn-outline btn-sm quick-upload-label" for="resume-file-input">
+                Upload PDF
+              </label>
+              <input type="file" id="resume-file-input" accept=".pdf" />
+              <span id="quick-upload-status" class="quick-upload-status"></span>
+            </div>
+          </div>
+
+          <!-- Right: job description -->
+          <div>
+            <label for="jd-textarea">Job Description <span class="required">*</span></label>
+            <textarea id="jd-textarea" rows="9"
+              placeholder="Paste the full job description here — title, responsibilities, required skills, preferred qualifications…"
+              required></textarea>
+          </div>
+
+        </div>
+
+        <div class="ats-action-row">
+          <button type="submit" id="analyze-btn" class="btn btn-primary btn-lg" disabled>
+            Analyze Compatibility
+          </button>
+          <span id="analyze-status" class="analyze-status"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Result section (hidden until analysis) ─────────────────────────── -->
+    <div id="result-section" style="display:none">
+
+      <!-- Score hero -->
+      <div class="card">
+        <div class="card-title">Compatibility Score</div>
+        <div class="score-hero">
+          <div class="score-hero-top">
+
+            <!-- SVG ring -->
+            <div class="score-ring-wrap">
+              <svg viewBox="0 0 120 120" class="score-ring" aria-hidden="true">
+                <circle class="score-ring-track" cx="60" cy="60" r="50"/>
+                <circle id="score-ring-fill" class="score-ring-fill" cx="60" cy="60" r="50"
+                        stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+              </svg>
+              <div class="score-ring-inner">
+                <span id="score-number" class="score-number">—</span>
+                <span id="score-pct" class="score-pct" style="display:none">%</span>
+                <span id="score-grade" class="score-grade"></span>
+              </div>
+            </div>
+
+            <!-- Summary text -->
+            <div class="score-summary">
+              <div id="score-heading" class="score-heading">Resume–Job Alignment</div>
+              <p id="score-subtext" class="score-subtext">This score measures how well your resume's content aligns with the job description. It does not predict hiring decisions.</p>
+              <span id="jd-role-badge" class="jd-role-badge" style="display:none"></span>
+            </div>
+          </div>
+
+          <!-- Component score bars -->
+          <div class="component-scores">
+            <div class="comp-score-row">
+              <div class="comp-score-header">
+                <span class="comp-score-label">Required Skills <span class="comp-score-weight">(40%)</span></span>
+                <span id="req-score-val" class="comp-score-val">—</span>
+              </div>
+              <div class="score-bar-track"><div id="req-score-bar" class="score-bar-fill" style="width:0%"></div></div>
+            </div>
+            <div class="comp-score-row">
+              <div class="comp-score-header">
+                <span class="comp-score-label">Experience Relevance <span class="comp-score-weight">(30%)</span></span>
+                <span id="exp-score-val" class="comp-score-val">—</span>
+              </div>
+              <div class="score-bar-track"><div id="exp-score-bar" class="score-bar-fill" style="width:0%"></div></div>
+            </div>
+            <div class="comp-score-row">
+              <div class="comp-score-header">
+                <span class="comp-score-label">Preferred Skills <span class="comp-score-weight">(15%)</span></span>
+                <span id="pref-score-val" class="comp-score-val">—</span>
+              </div>
+              <div class="score-bar-track"><div id="pref-score-bar" class="score-bar-fill" style="width:0%"></div></div>
+            </div>
+            <div class="comp-score-row">
+              <div class="comp-score-header">
+                <span class="comp-score-label">Education Alignment <span class="comp-score-weight">(15%)</span></span>
+                <span id="edu-score-val" class="comp-score-val">—</span>
+              </div>
+              <div class="score-bar-track"><div id="edu-score-bar" class="score-bar-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills grid -->
+      <div class="skills-grid" id="skills-grid">
+        <!-- Matched -->
+        <div class="card skills-col">
+          <div class="skills-col-header skills-header-matched">
+            <span class="skills-col-icon">✓</span>
+            <span class="skills-col-title">Matched</span>
+            <span id="matched-count" class="skills-col-count"></span>
+          </div>
+          <ul id="matched-list" class="skill-entries"></ul>
+          <p id="matched-empty" class="skills-empty" style="display:none">No required skills matched.</p>
+        </div>
+
+        <!-- Partial -->
+        <div class="card skills-col">
+          <div class="skills-col-header skills-header-partial">
+            <span class="skills-col-icon">~</span>
+            <span class="skills-col-title">Partial Match</span>
+            <span id="partial-count" class="skills-col-count"></span>
+          </div>
+          <ul id="partial-list" class="skill-entries"></ul>
+          <p id="partial-empty" class="skills-empty" style="display:none">No partial matches.</p>
+        </div>
+
+        <!-- Missing -->
+        <div class="card skills-col">
+          <div class="skills-col-header skills-header-missing">
+            <span class="skills-col-icon">✗</span>
+            <span class="skills-col-title">Not Evidenced</span>
+            <span id="missing-count" class="skills-col-count"></span>
+          </div>
+          <ul id="missing-list" class="skill-entries"></ul>
+          <p id="missing-empty" class="skills-empty" style="display:none">All required skills evidenced!</p>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="card">
+        <div class="card-title">Recommendations</div>
+        <ul id="recommendations-list" class="rec-list"></ul>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="ats-disclaimer">
+        <span class="ats-disclaimer-icon">ℹ</span>
+        <span id="disclaimer-text">Skills absent from your resume were not found in the uploaded document. This does not mean you lack those skills — they may simply not be listed. This score measures document-to-job alignment, not your actual fit or hiring probability.</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="ats-result-actions">
+        <a id="tailor-link" href="tailor.html" class="btn btn-primary">Tailor This Resume with AI</a>
+        <button id="analyze-another-btn" class="btn btn-outline">Analyze Another</button>
+        <button id="delete-result-btn" class="btn btn-ghost btn-sm" style="color:var(--danger)">Delete This Analysis</button>
+      </div>
+
+    </div>
+
+    <!-- ── Analysis history ────────────────────────────────────────────────── -->
+    <div>
+      <div class="section-header">
+        <h2>Analysis History</h2>
+        <span id="ats-history-count" class="history-count-badge"></span>
+      </div>
+
+      <div id="ats-history-loading" class="history-loading">Loading history…</div>
+
+      <div id="ats-history-empty" class="history-empty" style="display:none">
+        No analyses yet. Select a resume, paste a job description above, and click <strong>Analyze Compatibility</strong>.
+      </div>
+
+      <ul id="ats-history-list" class="history-list" style="display:none"></ul>
+    </div>
+
+  </main>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────────── -->
+  <dialog id="delete-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this analysis result? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="delete-cancel-btn" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="delete-confirm-btn" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/ats.js"></script>
+</body>
+</html>

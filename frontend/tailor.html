@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Tailor Resume</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="ats.html" class="btn btn-ghost btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="tailor-page">
+
+    <!-- View mode bar — shown only when ?tailored_id= is in URL -->
+    <div id="view-mode-bar" class="view-mode-bar" style="display:none">
+      <a href="dashboard.html" class="btn btn-outline btn-sm">&larr; Back to History</a>
+      <span id="view-mode-label" class="view-mode-label"></span>
+    </div>
+
+    <!-- ── Input card ────────────────────────────────────────────────────── -->
+    <section id="tailor-input-section" class="tailor-input-card">
+      <h1>Tailor Your Resume</h1>
+      <p class="tailor-desc">Paste a job description and pick a resume. AI will align your bullets and summary to match the role — using only experience you already have, never inventing anything new.</p>
+
+      <form id="tailor-form">
+        <label for="resume-select">Select Resume</label>
+        <select id="resume-select" required>
+          <option value="">Loading resumes…</option>
+        </select>
+
+        <label for="jd-text" style="margin-top:1.25rem">Job Description <span class="required">*</span></label>
+        <textarea id="jd-text" rows="12"
+          placeholder="Paste the full job description here — title, responsibilities, requirements, preferred qualifications…"
+          required></textarea>
+
+        <div class="form-row">
+          <button type="submit" id="tailor-btn" class="btn btn-primary">Tailor with AI</button>
+          <span id="tailor-status" class="tailor-status"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- ── Results ───────────────────────────────────────────────────────── -->
+    <section id="result-section" class="tailor-result" style="display:none">
+
+      <div class="result-header">
+        <h2>Tailoring Result</h2>
+        <span id="match-badge" class="badge"></span>
+      </div>
+
+      <div id="alignment-note" class="alignment-box"></div>
+
+      <div id="missing-skills-section" class="missing-box" style="display:none">
+        <strong>Skills in the JD not found in your resume:</strong>
+        <ul id="missing-skills-list" class="tag-list"></ul>
+      </div>
+
+      <!-- Before / After comparison -->
+      <div class="comparison-grid">
+        <div class="compare-panel">
+          <div class="compare-label">Original Resume</div>
+          <div id="original-content" class="compare-body"></div>
+        </div>
+        <div class="compare-panel compare-tailored">
+          <div class="compare-label">
+            Tailored Resume
+            <span class="compare-hint">matched keywords highlighted</span>
+          </div>
+          <div id="tailored-content" class="compare-body"></div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button id="dl-resume-btn" class="btn btn-primary">&#8595; Download Resume PDF</button>
+        <button id="copy-btn" class="btn btn-outline">Copy as JSON</button>
+        <button id="new-tailor-btn" class="btn btn-ghost">Tailor Another</button>
+      </div>
+
+      <!-- ── Cover Letter ──────────────────────────────────────────────── -->
+      <div class="section-divider"></div>
+
+      <div class="cl-header-row">
+        <div>
+          <h2>Cover Letter</h2>
+          <p class="cl-sub">AI-generated from your tailored resume and the job description.</p>
+        </div>
+        <button id="gen-cl-btn" class="btn btn-primary">Generate Cover Letter</button>
+      </div>
+
+      <div id="cl-section" style="display:none">
+        <div id="cl-status-bar" class="cl-status-bar" style="display:none"></div>
+        <textarea id="cl-textarea" class="cl-textarea" spellcheck="true"
+          placeholder="Your cover letter will appear here…"></textarea>
+        <div class="cl-actions">
+          <button id="cl-save-btn" class="btn btn-primary btn-sm">Save Changes</button>
+          <button id="cl-dl-btn" class="btn btn-primary btn-sm">&#8595; Download PDF</button>
+          <button id="cl-regen-btn" class="btn btn-outline btn-sm">Regenerate</button>
+          <button id="cl-copy-btn" class="btn btn-ghost btn-sm">Copy</button>
+          <span id="cl-save-status" class="cl-save-status"></span>
+        </div>
+      </div>
+
+      <div id="cl-loading" class="cl-loading" style="display:none">
+        <span class="spinner"></span>
+        Generating cover letter — typically 10–20 seconds…
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/tailor.js"></script>
+</body>
+</html>

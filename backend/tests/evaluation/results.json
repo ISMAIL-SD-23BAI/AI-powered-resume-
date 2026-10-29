@@ -1,0 +1,573 @@
+{
+  "dataset_case_count": 11,
+  "engine_macro": {
+    "precision": 0.909,
+    "recall": 0.977,
+    "f1": 0.896
+  },
+  "baseline_macro": {
+    "precision": 0.818,
+    "recall": 0.909,
+    "f1": 0.727
+  },
+  "engine_micro": {
+    "precision": 0.952,
+    "recall": 0.952,
+    "f1": 0.952
+  },
+  "baseline_micro": {
+    "precision": 0.895,
+    "recall": 0.81,
+    "f1": 0.85
+  },
+  "evidence_source_localization": {
+    "located": 21,
+    "expected": 22,
+    "recall": 0.955
+  },
+  "runtime": {
+    "engine": {
+      "mean_ms": 1.461,
+      "median_ms": 1.0973,
+      "p95_ms": 5.3616
+    },
+    "baseline": {
+      "mean_ms": 0.0179,
+      "median_ms": 0.0181,
+      "p95_ms": 0.0235
+    },
+    "python_tracemalloc_peak_bytes": 50360,
+    "scope": "single sequential dataset pass; excludes native and OS allocations"
+  },
+  "environment": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "ranking_quality": "not evaluated: cases use different job descriptions, not a shared candidate ranking set",
+  "cases": [
+    {
+      "id": "TC01_perfect_match",
+      "eng_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "eng_missing": [],
+      "bas_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "expected_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 76,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "python": {
+          "section": "skills",
+          "quote": "python"
+        },
+        "fastapi": {
+          "section": "skills",
+          "quote": "fastapi"
+        },
+        "postgresql": {
+          "section": "skills",
+          "quote": "postgresql"
+        },
+        "docker": {
+          "section": "skills",
+          "quote": "docker"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "python": [
+          "skills"
+        ],
+        "fastapi": [
+          "skills",
+          "experience[0]"
+        ],
+        "postgresql": [
+          "skills",
+          "experience[0]"
+        ],
+        "docker": [
+          "skills"
+        ]
+      }
+    },
+    {
+      "id": "TC02_synonym_match",
+      "eng_matched": [
+        "deep learning",
+        "kubernetes",
+        "machine learning",
+        "python"
+      ],
+      "eng_missing": [],
+      "bas_matched": [],
+      "expected_matched": [
+        "deep learning",
+        "kubernetes",
+        "machine learning",
+        "python"
+      ],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 0.0,
+      "b_f1": 0.0,
+      "overall_score": 75,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "machine learning": {
+          "section": "skills",
+          "quote": "ML"
+        },
+        "kubernetes": {
+          "section": "skills",
+          "quote": "k8s"
+        },
+        "deep learning": {
+          "section": "skills",
+          "quote": "DL"
+        },
+        "python": {
+          "section": "skills",
+          "quote": "py"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "machine learning": [
+          "skills",
+          "experience[0]"
+        ],
+        "kubernetes": [
+          "skills",
+          "experience[0]"
+        ],
+        "deep learning": [
+          "skills"
+        ],
+        "python": [
+          "skills"
+        ]
+      }
+    },
+    {
+      "id": "TC03_evidence_in_bullets",
+      "eng_matched": [
+        "matplotlib",
+        "pandas",
+        "scikit-learn"
+      ],
+      "eng_missing": [
+        "python"
+      ],
+      "bas_matched": [
+        "matplotlib",
+        "pandas",
+        "python",
+        "scikit-learn"
+      ],
+      "expected_matched": [
+        "matplotlib",
+        "pandas",
+        "python",
+        "scikit-learn"
+      ],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 0.75,
+      "e_f1": 0.857,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 55,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "python": {
+          "section": "experience[0]",
+          "quote": "Automated ETL pipelines in Python"
+        },
+        "pandas": {
+          "section": "experience[0]",
+          "quote": "using pandas"
+        },
+        "scikit-learn": {
+          "section": "experience[0]",
+          "quote": "scikit-learn classification models"
+        },
+        "matplotlib": {
+          "section": "experience[0]",
+          "quote": "pandas and matplotlib"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "pandas": [
+          "experience[0]"
+        ],
+        "scikit-learn": [
+          "experience[0]"
+        ],
+        "matplotlib": [
+          "experience[0]"
+        ]
+      }
+    },
+    {
+      "id": "TC04_partial_match",
+      "eng_matched": [
+        "python"
+      ],
+      "eng_missing": [
+        "docker",
+        "fastapi",
+        "kubernetes",
+        "postgresql"
+      ],
+      "bas_matched": [
+        "python"
+      ],
+      "expected_matched": [
+        "python"
+      ],
+      "expected_missing": [
+        "docker",
+        "fastapi",
+        "kubernetes",
+        "postgresql"
+      ],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 42,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "python": {
+          "section": "skills",
+          "quote": "python"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "python": [
+          "skills"
+        ]
+      }
+    },
+    {
+      "id": "TC05_irrelevant_resume",
+      "eng_matched": [],
+      "eng_missing": [
+        "cuda",
+        "python",
+        "pytorch",
+        "tensorflow"
+      ],
+      "bas_matched": [],
+      "expected_matched": [],
+      "expected_missing": [
+        "cuda",
+        "python",
+        "pytorch",
+        "tensorflow"
+      ],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 25,
+      "pair_label": "irrelevant",
+      "expected_evidence": {},
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {}
+    },
+    {
+      "id": "TC06_misleading_keyword_overlap",
+      "eng_matched": [
+        "java"
+      ],
+      "eng_missing": [],
+      "bas_matched": [
+        "java"
+      ],
+      "expected_matched": [],
+      "expected_missing": [
+        "java"
+      ],
+      "e_p": 0.0,
+      "e_r": 1.0,
+      "e_f1": 0.0,
+      "b_p": 0.0,
+      "b_r": 1.0,
+      "b_f1": 0.0,
+      "overall_score": 74,
+      "pair_label": "irrelevant",
+      "expected_evidence": {},
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "java": [
+          "experience[0]"
+        ]
+      }
+    },
+    {
+      "id": "TC07_java_vs_javascript",
+      "eng_matched": [],
+      "eng_missing": [
+        "java"
+      ],
+      "bas_matched": [
+        "java"
+      ],
+      "expected_matched": [],
+      "expected_missing": [
+        "java"
+      ],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 0.0,
+      "b_r": 1.0,
+      "b_f1": 0.0,
+      "overall_score": 24,
+      "pair_label": "irrelevant",
+      "expected_evidence": {},
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {}
+    },
+    {
+      "id": "TC08_seniority_gap",
+      "eng_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "eng_missing": [],
+      "bas_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "expected_matched": [
+        "docker",
+        "fastapi",
+        "postgresql",
+        "python"
+      ],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 71,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "python": {
+          "section": "skills",
+          "quote": "python"
+        },
+        "fastapi": {
+          "section": "skills",
+          "quote": "fastapi"
+        },
+        "postgresql": {
+          "section": "skills",
+          "quote": "postgresql"
+        },
+        "docker": {
+          "section": "skills",
+          "quote": "docker"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "python": [
+          "skills"
+        ],
+        "fastapi": [
+          "skills",
+          "experience[0]"
+        ],
+        "postgresql": [
+          "skills",
+          "experience[0]"
+        ],
+        "docker": [
+          "skills",
+          "experience[0]"
+        ]
+      }
+    },
+    {
+      "id": "TC09_all_missing",
+      "eng_matched": [],
+      "eng_missing": [
+        "graphql",
+        "mongodb",
+        "node.js",
+        "react",
+        "typescript"
+      ],
+      "bas_matched": [],
+      "expected_matched": [],
+      "expected_missing": [
+        "graphql",
+        "mongodb",
+        "node.js",
+        "react",
+        "typescript"
+      ],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 34,
+      "pair_label": "irrelevant",
+      "expected_evidence": {},
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {}
+    },
+    {
+      "id": "TC10_education_mismatch",
+      "eng_matched": [
+        "cuda",
+        "python",
+        "pytorch",
+        "tensorflow"
+      ],
+      "eng_missing": [],
+      "bas_matched": [
+        "cuda",
+        "python",
+        "pytorch",
+        "tensorflow"
+      ],
+      "expected_matched": [
+        "cuda",
+        "python",
+        "pytorch",
+        "tensorflow"
+      ],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 67,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "python": {
+          "section": "skills",
+          "quote": "python"
+        },
+        "pytorch": {
+          "section": "skills",
+          "quote": "pytorch"
+        },
+        "tensorflow": {
+          "section": "skills",
+          "quote": "tensorflow"
+        },
+        "cuda": {
+          "section": "skills",
+          "quote": "cuda"
+        }
+      },
+      "expected_partial": [],
+      "engine_partial": [],
+      "engine_evidence": {
+        "python": [
+          "skills"
+        ],
+        "pytorch": [
+          "skills",
+          "experience[0]"
+        ],
+        "tensorflow": [
+          "skills",
+          "experience[0]"
+        ],
+        "cuda": [
+          "skills",
+          "experience[0]"
+        ]
+      }
+    },
+    {
+      "id": "TC11_partial_semantic_evidence",
+      "eng_matched": [],
+      "eng_missing": [],
+      "bas_matched": [],
+      "expected_matched": [],
+      "expected_missing": [],
+      "e_p": 1.0,
+      "e_r": 1.0,
+      "e_f1": 1.0,
+      "b_p": 1.0,
+      "b_r": 1.0,
+      "b_f1": 1.0,
+      "overall_score": 24,
+      "pair_label": "relevant",
+      "expected_evidence": {
+        "data engineering": {
+          "section": "skills",
+          "quote": "data pipelines and engineering"
+        }
+      },
+      "expected_partial": [
+        "data engineering"
+      ],
+      "engine_partial": [
+        "data engineering"
+      ],
+      "engine_evidence": {
+        "data engineering": [
+          "skills"
+        ]
+      }
+    }
+  ]
+}

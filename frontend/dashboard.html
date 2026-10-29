@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="ats.html" class="btn btn-outline btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <a href="tailor.html" class="btn btn-primary btn-sm">+ New Tailoring</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── My Resumes ──────────────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-title">My Resumes</div>
+
+      <form id="upload-form">
+        <div class="upload-zone">
+          <label class="upload-zone-label" id="file-label" for="resume-file">
+            Choose PDF
+          </label>
+          <input type="file" id="resume-file" accept=".pdf" />
+          <button type="submit" id="upload-btn" class="btn btn-primary btn-sm" disabled>Upload</button>
+          <span id="upload-status" class="upload-status"></span>
+        </div>
+      </form>
+
+      <ul id="resume-list" class="resume-chips"></ul>
+    </div>
+
+    <!-- ── History ─────────────────────────────────────────────────────────── -->
+    <div>
+      <div class="section-header">
+        <h2>Tailoring History</h2>
+        <span id="history-count" class="history-count-badge"></span>
+      </div>
+
+      <div id="history-loading" class="history-loading">Loading history…</div>
+
+      <div id="history-empty" class="history-empty" style="display:none">
+        No tailored resumes yet.
+        <a href="tailor.html">Tailor your first resume &rarr;</a>
+      </div>
+
+      <ul id="history-list" class="history-list" style="display:none"></ul>
+    </div>
+
+  </main>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────── -->
+  <dialog id="confirm-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this tailoring entry and its cover letter? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="confirm-no" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="confirm-yes" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

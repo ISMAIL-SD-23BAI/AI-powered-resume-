@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Log In</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+      <span class="auth-brand">Resume Tailor</span>
+      <h2>Welcome back</h2>
+      <p class="auth-sub">Log in to your account to continue.</p>
+
+      <form id="login-form" novalidate>
+        <label for="email">Email address</label>
+        <input type="email" id="email" required autocomplete="email" placeholder="you@example.com" />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required autocomplete="current-password" placeholder="Your password" />
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">Log In</button>
+        <p id="error-msg" class="error-msg" aria-live="polite"></p>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="signup.html">Sign up &rarr;</a>
+      </div>
+    </div>
+  </main>
+  <script src="js/login.js"></script>
+</body>
+</html>

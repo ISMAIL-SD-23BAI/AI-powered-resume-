@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Skill Gap Analyzer</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="tailor.html" class="btn btn-ghost btn-sm">Tailor Resume</a>
+      <a href="ats.html" class="btn btn-ghost btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-primary btn-sm" aria-current="page">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── Input card ──────────────────────────────────────────────────────── -->
+    <div class="card">
+      <h1 class="ats-title">Skill Gap Analyzer</h1>
+      <p class="ats-desc">Select a resume and paste a job description to see which skills are demonstrated, partially evidenced, or missing — then get a personalised learning roadmap. No invented metrics or external course links.</p>
+
+      <form id="gap-form">
+        <div class="ats-form-grid">
+
+          <div>
+            <label for="resume-select">Resume</label>
+            <select id="resume-select">
+              <option value="">Loading resumes…</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="jd-textarea">Job Description <span class="required">*</span></label>
+            <textarea id="jd-textarea" rows="9"
+              placeholder="Paste the full job description — title, responsibilities, required skills, preferred qualifications…"
+              required></textarea>
+          </div>
+
+        </div>
+
+        <div class="ats-action-row">
+          <button type="submit" id="analyze-btn" class="btn btn-primary btn-lg" disabled>
+            Analyze Skill Gap
+          </button>
+          <span id="analyze-status" class="analyze-status"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Result section ─────────────────────────────────────────────────── -->
+    <div id="result-section" style="display:none">
+
+      <!-- Score + gap summary banner -->
+      <div class="card sg-score-banner">
+        <div class="sg-score-left">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 120 120" class="score-ring" aria-hidden="true">
+              <circle class="score-ring-track" cx="60" cy="60" r="50"/>
+              <circle id="sg-ring-fill" class="score-ring-fill" cx="60" cy="60" r="50"
+                      stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+            </svg>
+            <div class="score-ring-inner">
+              <span id="sg-score-number" class="score-number">—</span>
+              <span class="score-pct" style="display:none">%</span>
+              <span id="sg-score-grade" class="score-grade"></span>
+            </div>
+          </div>
+          <div class="sg-score-meta">
+            <div id="sg-role-badge" class="jd-role-badge" style="display:none; margin-bottom:0.5rem"></div>
+            <div class="score-heading">Resume–Job Alignment</div>
+            <p class="sg-score-desc">Skills classified below reflect evidence found in your resume document only — not your actual abilities.</p>
+          </div>
+        </div>
+        <div id="sg-gap-summary" class="sg-gap-summary"></div>
+      </div>
+
+      <!-- Classification grid (2 × 2) -->
+      <div class="sg-classification-grid" id="classification-grid">
+
+        <div class="card sg-bucket">
+          <div class="sg-bucket-header sg-demonstrated">
+            <span class="sg-bucket-icon">✓</span>
+            <span class="sg-bucket-title">Demonstrated</span>
+            <span id="demonstrated-count" class="skills-col-count">0</span>
+          </div>
+          <ul id="demonstrated-list" class="sg-skill-list"></ul>
+          <p id="demonstrated-empty" class="skills-empty" style="display:none">None found.</p>
+        </div>
+
+        <div class="card sg-bucket">
+          <div class="sg-bucket-header sg-partial">
+            <span class="sg-bucket-icon">~</span>
+            <span class="sg-bucket-title">Partially Demonstrated</span>
+            <span id="partial-count" class="skills-col-count">0</span>
+          </div>
+          <ul id="partial-list" class="sg-skill-list"></ul>
+          <p id="partial-empty" class="skills-empty" style="display:none">None found.</p>
+        </div>
+
+        <div class="card sg-bucket">
+          <div class="sg-bucket-header sg-verify">
+            <span class="sg-bucket-icon">?</span>
+            <span class="sg-bucket-title">Requires Verification</span>
+            <span id="verify-count" class="skills-col-count">0</span>
+          </div>
+          <ul id="verify-list" class="sg-skill-list"></ul>
+          <p id="verify-empty" class="skills-empty" style="display:none">None found.</p>
+        </div>
+
+        <div class="card sg-bucket">
+          <div class="sg-bucket-header sg-notfound">
+            <span class="sg-bucket-icon">✗</span>
+            <span class="sg-bucket-title">Not Evidenced in Resume</span>
+            <span id="notfound-count" class="skills-col-count">0</span>
+          </div>
+          <ul id="notfound-list" class="sg-skill-list"></ul>
+          <p id="notfound-empty" class="skills-empty" style="display:none">All required skills evidenced!</p>
+        </div>
+
+      </div>
+
+      <!-- Roadmap -->
+      <div id="roadmap-section">
+        <div class="section-header">
+          <h2>Learning Roadmap</h2>
+          <span id="roadmap-progress-badge" class="history-count-badge"></span>
+        </div>
+        <div id="roadmap-empty" class="history-empty" style="display:none">
+          No skill gaps found — your resume already evidences all required skills for this role.
+        </div>
+        <div id="roadmap-items" class="sg-roadmap-list"></div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="ats-disclaimer">
+        <span class="ats-disclaimer-icon">ℹ</span>
+        <span id="disclaimer-text"></span>
+      </div>
+
+      <!-- Actions -->
+      <div class="ats-result-actions">
+        <button id="analyze-another-btn" class="btn btn-outline">Analyze Another</button>
+        <button id="delete-result-btn" class="btn btn-ghost btn-sm" style="color:var(--danger)">Delete This Analysis</button>
+      </div>
+
+    </div>
+
+    <!-- ── History ─────────────────────────────────────────────────────────── -->
+    <div>
+      <div class="section-header">
+        <h2>Analysis History</h2>
+        <span id="history-count" class="history-count-badge"></span>
+      </div>
+
+      <div id="history-loading" class="history-loading">Loading history…</div>
+
+      <div id="history-empty" class="history-empty" style="display:none">
+        No skill gap analyses yet. Select a resume, paste a job description above, and click <strong>Analyze Skill Gap</strong>.
+      </div>
+
+      <ul id="history-list" class="history-list" style="display:none"></ul>
+    </div>
+
+  </main>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────────── -->
+  <dialog id="delete-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this skill gap analysis and roadmap? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="delete-cancel-btn" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="delete-confirm-btn" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/skill_gap.js"></script>
+</body>
+</html>

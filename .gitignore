@@ -1,0 +1,48 @@
+# ── Virtual environment ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Python cache ───────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ── Secrets and environment files ──────────────────────────────────────────────
+# .env contains API keys, JWT secrets, and AWS credentials — never commit it
+.env
+.env.*
+!.env.example
+*.env.local
+*.env.*.local
+
+# ── Database files (contain private user data) ─────────────────────────────────
+*.db
+*.sqlite3
+
+# ── Test artefacts ─────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ── Distribution / packaging ───────────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── IDE / editor ───────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*.orig
+
+# ── OS ─────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

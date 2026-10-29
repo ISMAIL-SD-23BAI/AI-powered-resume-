@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Improve Resume</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="tailor.html" class="btn btn-ghost btn-sm">Tailor Resume</a>
+      <a href="ats.html" class="btn btn-ghost btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-primary btn-sm" aria-current="page">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── Input card ──────────────────────────────────────────────────────── -->
+    <div class="card">
+      <h1 class="ats-title">AI Resume Improvement Editor</h1>
+      <p class="ats-desc">Select a resume, paste a job description, and get AI-generated bullet-point suggestions — each with a reason and diff highlight. Accept, reject, or edit each suggestion individually before exporting.</p>
+
+      <form id="improve-form">
+        <div class="ats-form-grid">
+
+          <!-- Left: resume selection -->
+          <div>
+            <label for="resume-select">Resume</label>
+            <select id="resume-select">
+              <option value="">Loading resumes…</option>
+            </select>
+          </div>
+
+          <!-- Right: job description -->
+          <div>
+            <label for="jd-textarea">Job Description <span class="required">*</span></label>
+            <textarea id="jd-textarea" rows="9"
+              placeholder="Paste the full job description — title, responsibilities, required skills, preferred qualifications…"
+              required></textarea>
+          </div>
+
+        </div>
+
+        <div class="ats-action-row">
+          <button type="submit" id="generate-btn" class="btn btn-primary btn-lg" disabled>
+            Generate Suggestions
+          </button>
+          <span id="generate-status" class="analyze-status"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Result section ─────────────────────────────────────────────────── -->
+    <div id="result-section" style="display:none">
+
+      <!-- Role analysis callout -->
+      <div class="card improve-callout" id="analysis-card">
+        <div class="improve-callout-label">AI Analysis</div>
+        <p id="role-analysis-text" class="improve-callout-text"></p>
+      </div>
+
+      <!-- Progress + Apply bar -->
+      <div class="card improve-progress-card">
+        <div class="improve-progress-header">
+          <div>
+            <span class="improve-progress-label"><span id="accepted-count">0</span> of <span id="total-count">0</span> suggestions accepted</span>
+          </div>
+          <button id="apply-btn" class="btn btn-primary" disabled onclick="applyChanges()">
+            Apply 0 Accepted Changes
+          </button>
+        </div>
+        <div class="improve-progress-track">
+          <div id="improve-progress-fill" class="improve-progress-fill" style="width:0%"></div>
+        </div>
+        <div id="apply-status" class="apply-status" style="display:none"></div>
+      </div>
+
+      <!-- Suggestion cards (dynamically populated) -->
+      <div id="suggestions-container"></div>
+
+    </div>
+
+    <!-- ── Improvement history ─────────────────────────────────────────────── -->
+    <div>
+      <div class="section-header">
+        <h2>Improvement History</h2>
+        <span id="history-count" class="history-count-badge"></span>
+      </div>
+
+      <div id="history-loading" class="history-loading">Loading history…</div>
+
+      <div id="history-empty" class="history-empty" style="display:none">
+        No improvement sessions yet. Select a resume and paste a job description above, then click <strong>Generate Suggestions</strong>.
+      </div>
+
+      <ul id="history-list" class="history-list" style="display:none"></ul>
+    </div>
+
+  </main>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────────── -->
+  <dialog id="delete-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this improvement session? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="delete-cancel-btn" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="delete-confirm-btn" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/improve.js"></script>
+</body>
+</html>

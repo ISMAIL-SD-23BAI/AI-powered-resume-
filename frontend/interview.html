@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Interview Prep</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="tailor.html" class="btn btn-ghost btn-sm">Tailor Resume</a>
+      <a href="ats.html" class="btn btn-ghost btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-ghost btn-sm">Job Tracker</a>
+      <a href="interview.html" class="btn btn-primary btn-sm" aria-current="page">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── New session form ───────────────────────────────────────────────── -->
+    <div class="card">
+      <h1 class="ats-title">AI Interview Preparation</h1>
+      <p class="ats-desc">Select a resume and paste a job description to generate role-specific practice questions — technical, behavioural, HR, and project-based. Submit answers to receive structured feedback grounded in your resume.</p>
+
+      <form id="session-form">
+        <div class="ats-form-grid">
+
+          <div>
+            <label for="resume-select">Resume</label>
+            <select id="resume-select">
+              <option value="">Loading resumes…</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="jd-textarea">Job Description <span class="required">*</span></label>
+            <textarea id="jd-textarea" rows="9"
+              placeholder="Paste the full job description — title, responsibilities, required skills, preferred qualifications…"
+              required></textarea>
+          </div>
+
+        </div>
+
+        <div class="ats-action-row">
+          <button type="submit" id="generate-btn" class="btn btn-primary btn-lg" disabled>
+            Generate Interview Questions
+          </button>
+          <span id="generate-status" class="analyze-status"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Active session ─────────────────────────────────────────────────── -->
+    <div id="session-section" style="display:none">
+
+      <div class="section-header">
+        <div>
+          <h2 id="session-role-heading">Interview Session</h2>
+          <p id="session-meta" class="ats-desc" style="margin:0"></p>
+        </div>
+        <button id="close-session-btn" class="btn btn-ghost btn-sm">Close Session</button>
+      </div>
+
+      <!-- Question tabs -->
+      <div id="question-tabs" class="ivw-tabs" role="tablist"></div>
+
+      <!-- Active question card -->
+      <div id="question-card" class="card ivw-question-card">
+        <div class="ivw-question-header">
+          <span id="q-type-badge" class="ivw-type-badge"></span>
+          <span id="q-number" class="ivw-q-number"></span>
+        </div>
+        <p id="q-text" class="ivw-q-text"></p>
+        <div class="ivw-guidance-box">
+          <span class="ivw-guidance-label">Guidance</span>
+          <p id="q-guidance" class="ivw-guidance-text"></p>
+          <p id="q-structure" class="ivw-structure-text"></p>
+        </div>
+
+        <!-- Answer form -->
+        <div id="answer-form-wrap">
+          <label for="answer-textarea" class="ivw-answer-label">Your Answer</label>
+          <textarea id="answer-textarea" class="ivw-answer-textarea" rows="6"
+            placeholder="Type your practice answer here (10–5,000 characters)…"></textarea>
+          <div class="ivw-answer-actions">
+            <span id="answer-char-count" class="ivw-char-count">0 / 5000</span>
+            <button id="submit-answer-btn" class="btn btn-primary" disabled>Submit Answer</button>
+            <span id="answer-status" class="analyze-status"></span>
+          </div>
+        </div>
+
+        <!-- Feedback panel -->
+        <div id="feedback-panel" style="display:none">
+          <div class="ivw-feedback-card">
+            <div class="ivw-feedback-header">
+              <span class="ivw-feedback-title">Feedback</span>
+              <span id="overall-score-badge" class="ivw-overall-badge"></span>
+            </div>
+
+            <!-- Score bars -->
+            <div class="ivw-score-bars" id="score-bars"></div>
+            <p class="ivw-score-explainer">Scores are coaching signals: 1 = needs substantial development, 3 = adequate foundation, 5 = clear, specific, and well-supported. Relevance checks fit to the question and role; clarity checks readability; structure checks organization; technical checks accuracy and completeness.</p>
+
+            <!-- Strengths / improvements -->
+            <div class="ivw-two-col">
+              <div>
+                <div class="ivw-col-label ivw-strengths-label">Strengths</div>
+                <ul id="strengths-list" class="ivw-bullet-list"></ul>
+              </div>
+              <div>
+                <div class="ivw-col-label ivw-improvements-label">To Improve</div>
+                <ul id="improvements-list" class="ivw-bullet-list"></ul>
+              </div>
+            </div>
+
+            <!-- Unsupported claims -->
+            <div id="unsupported-wrap" style="display:none">
+              <div class="ivw-col-label ivw-unsupported-label">Claims Not Evidenced in Resume</div>
+              <p class="ivw-claims-note">These claims could not be verified from the resume provided; this does not mean they are false.</p>
+              <ul id="unsupported-list" class="ivw-bullet-list"></ul>
+            </div>
+
+            <!-- Narrative feedback -->
+            <p id="feedback-text" class="ivw-feedback-text"></p>
+
+            <!-- Disclaimer -->
+            <div class="ats-disclaimer ivw-disclaimer">
+              <span class="ats-disclaimer-icon">ℹ</span>
+              <span id="feedback-disclaimer"></span>
+            </div>
+          </div>
+
+          <!-- Previous attempts -->
+          <div id="prev-attempts-wrap" style="display:none">
+            <div class="section-header ivw-attempts-header">
+              <span class="ivw-col-label">Previous Attempts</span>
+              <span id="attempt-count-badge" class="history-count-badge"></span>
+            </div>
+            <div id="prev-attempts-list"></div>
+          </div>
+
+          <div class="ivw-answer-retry">
+            <button id="try-again-btn" class="btn btn-outline btn-sm">Try Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Session history ─────────────────────────────────────────────────── -->
+    <div>
+      <div class="section-header">
+        <h2>Session History</h2>
+        <span id="history-count" class="history-count-badge"></span>
+      </div>
+
+      <div id="history-loading" class="history-loading">Loading sessions…</div>
+
+      <div id="history-empty" class="history-empty" style="display:none">
+        No interview sessions yet. Select a resume and paste a job description above, then click <strong>Generate Interview Questions</strong>.
+      </div>
+
+      <ul id="history-list" class="history-list" style="display:none"></ul>
+    </div>
+
+  </main>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────────── -->
+  <dialog id="delete-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this interview session and all saved answers? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="delete-cancel-btn" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="delete-confirm-btn" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/interview.js"></script>
+</body>
+</html>

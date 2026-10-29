@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Tailor — Job Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">Resume Tailor</a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="tailor.html" class="btn btn-ghost btn-sm">Tailor Resume</a>
+      <a href="ats.html" class="btn btn-ghost btn-sm">ATS Analyzer</a>
+      <a href="improve.html" class="btn btn-ghost btn-sm">Improve Resume</a>
+      <a href="skill_gap.html" class="btn btn-ghost btn-sm">Skill Gap</a>
+      <a href="tracker.html" class="btn btn-primary btn-sm" aria-current="page">Job Tracker</a>
+      <a href="interview.html" class="btn btn-ghost btn-sm">Interview Prep</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <!-- ── Stats bar ──────────────────────────────────────────────────────── -->
+    <div class="trk-stats-bar" id="stats-bar">
+      <div class="trk-stat" id="stat-total">
+        <div class="trk-stat-num" id="stat-total-num">—</div>
+        <div class="trk-stat-label">Total</div>
+      </div>
+      <div class="trk-stat trk-stat-saved" id="stat-saved">
+        <div class="trk-stat-num" id="stat-saved-num">—</div>
+        <div class="trk-stat-label">Saved</div>
+      </div>
+      <div class="trk-stat trk-stat-active" id="stat-active">
+        <div class="trk-stat-num" id="stat-active-num">—</div>
+        <div class="trk-stat-label">Active</div>
+      </div>
+      <div class="trk-stat trk-stat-interview" id="stat-interview">
+        <div class="trk-stat-num" id="stat-interview-num">—</div>
+        <div class="trk-stat-label">Interviews</div>
+      </div>
+      <div class="trk-stat trk-stat-offer" id="stat-offer">
+        <div class="trk-stat-num" id="stat-offer-num">—</div>
+        <div class="trk-stat-label">Offers</div>
+      </div>
+      <div class="trk-stat trk-stat-rejected" id="stat-rejected">
+        <div class="trk-stat-num" id="stat-rejected-num">—</div>
+        <div class="trk-stat-label">Rejected</div>
+      </div>
+    </div>
+
+    <!-- ── Controls ───────────────────────────────────────────────────────── -->
+    <div class="card trk-controls">
+      <div class="trk-controls-left">
+        <input type="search" id="search-input" class="trk-search" placeholder="Search company or title…" />
+        <select id="status-filter" class="trk-filter-select">
+          <option value="">All statuses</option>
+          <option value="saved">Saved</option>
+          <option value="applied">Applied</option>
+          <option value="assessment">Assessment</option>
+          <option value="interview">Interview</option>
+          <option value="offer">Offer</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <button id="add-btn" class="btn btn-primary btn-sm">+ Add Application</button>
+    </div>
+
+    <!-- ── Application list ───────────────────────────────────────────────── -->
+    <div id="list-loading" class="history-loading">Loading applications…</div>
+
+    <div id="list-empty" class="history-empty" style="display:none">
+      No applications yet — click <strong>+ Add Application</strong> to get started.
+    </div>
+
+    <div id="app-list" class="trk-app-list" style="display:none"></div>
+
+  </main>
+
+  <!-- ── Add / Edit dialog ──────────────────────────────────────────────────── -->
+  <dialog id="app-dialog" class="trk-dialog">
+    <div class="trk-dialog-header">
+      <h2 id="dialog-title" class="trk-dialog-title">Add Application</h2>
+      <button id="dialog-close-btn" class="btn btn-ghost btn-sm" aria-label="Close">✕</button>
+    </div>
+
+    <form id="app-form" class="trk-form" novalidate>
+      <div class="trk-form-grid">
+
+        <div class="trk-form-field">
+          <label for="f-company">Company <span class="required">*</span></label>
+          <input id="f-company" type="text" placeholder="e.g. Google" maxlength="200" required />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-title">Job Title <span class="required">*</span></label>
+          <input id="f-title" type="text" placeholder="e.g. Backend Engineer" maxlength="200" required />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-status">Status</label>
+          <select id="f-status">
+            <option value="saved">Saved</option>
+            <option value="applied">Applied</option>
+            <option value="assessment">Assessment</option>
+            <option value="interview">Interview</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-url">Job URL</label>
+          <input id="f-url" type="url" placeholder="https://…" />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-app-date">Application Date</label>
+          <input id="f-app-date" type="date" />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-deadline">Deadline</label>
+          <input id="f-deadline" type="date" />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-interview-date">Interview Date</label>
+          <input id="f-interview-date" type="date" />
+        </div>
+
+        <div class="trk-form-field">
+          <label for="f-resume">Resume</label>
+          <select id="f-resume">
+            <option value="">None</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="trk-form-field trk-form-full">
+        <label for="f-jd">Job Description</label>
+        <textarea id="f-jd" rows="4" placeholder="Paste the job description here (optional)…"></textarea>
+      </div>
+
+      <div class="trk-form-field trk-form-full">
+        <label for="f-notes">Notes</label>
+        <textarea id="f-notes" rows="3" placeholder="Referral source, next steps, contacts…"></textarea>
+      </div>
+
+      <div id="form-error" class="trk-form-error" style="display:none"></div>
+
+      <div class="trk-form-actions">
+        <button type="button" id="form-cancel-btn" class="btn btn-ghost">Cancel</button>
+        <button type="submit" id="form-save-btn" class="btn btn-primary">Save Application</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ── Delete confirmation dialog ─────────────────────────────────────────── -->
+  <dialog id="delete-dialog" class="confirm-dialog">
+    <p class="confirm-msg">Delete this application? This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button id="delete-cancel-btn" class="btn btn-ghost btn-sm">Cancel</button>
+      <button id="delete-confirm-btn" class="btn btn-sm" style="background:var(--danger);color:#fff;border-color:var(--danger)">Delete</button>
+    </div>
+  </dialog>
+
+  <script src="js/tracker.js"></script>
+</body>
+</html>
